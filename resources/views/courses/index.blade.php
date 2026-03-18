@@ -1,7 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Cursussen</h1>
+    <h1 class="text-2xl font-bold mb-4">Actieve Cursussen</h1>
+
+    <table class="w-full text-left border-collapse mb-8">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="p-2 border">Titel</th>
+                <th class="p-2 border">Beschrijving</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($courses as $course)
+                <tr>
+                    <td class="p-2 border">{{ $course->title }}</td>
+                    <td class="p-2 border">{{ $course->description }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="2" class="p-2 text-gray-500">Geen actieve cursussen.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <h2 class="text-xl font-bold mb-4">Dashboard — Alle Cursussen</h2>
 
     <table class="w-full text-left border-collapse">
         <thead>
