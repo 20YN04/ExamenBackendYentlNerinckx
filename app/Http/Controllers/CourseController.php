@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use app\Models\Course;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -10,22 +10,21 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::where('active', true)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-                    
-        $allCourse = Course::orderBy('title', 'asc')->get();
-        return view('courses.index', compact('courses', 'allCourse'));
+                         ->orderBy('title', 'asc')
+                         ->get();
+
+        $allCourses = Course::orderBy('title', 'asc')->get();
+
+        return view('courses.index', compact('courses', 'allCourses'));
     }
-    
- public function store(Request $request)
+
+    public function store(Request $request)
     {
-        
         $request->validate([
             'title'       => 'required|min:3',
             'description' => 'required',
         ]);
 
-        
         Course::create([
             'title'       => $request->title,
             'description' => $request->description,
@@ -37,7 +36,6 @@ class CourseController extends Controller
 
     public function toggle(Course $course)
     {
-        
         $course->active = !$course->active;
         $course->save();
 
