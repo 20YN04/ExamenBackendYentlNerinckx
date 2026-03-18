@@ -1,43 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Cursussen</h1>
+    <h1 class="text-2xl font-bold mb-4">Nieuwe cursus toevoegen</h1>
 
-    <table class="w-full text-left border-collapse">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="p-2 border">Titel</th>
-                <th class="p-2 border">Beschrijving</th>
-                <th class="p-2 border">Status</th>
-                <th class="p-2 border">Actie</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($allCourses as $course)
-                <tr>
-                    <td class="p-2 border">{{ $course->title }}</td>
-                    <td class="p-2 border">{{ $course->description }}</td>
-                    <td class="p-2 border">
-                        @if($course->active)
-                            <span class="text-green-600">Actief</span>
-                        @else
-                            <span class="text-red-600">Inactief</span>
-                        @endif
-                    </td>
-                    <td class="p-2 border">
-                        <form action="{{ route('courses.toggle', $course) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="px-3 py-1 text-white rounded {{ $course->active ? 'bg-orange-400' : 'bg-green-500' }}">
-                                {{ $course->active ? 'Deactiveer' : 'Activeer' }}
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="p-2 text-gray-500">Geen cursussen gevonden.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <form action="{{ route('courses.store') }}" method="POST" class="space-y-4">
+        @csrf
+
+        <div>
+            <label class="block mb-1">Titel</label>
+            <input type="text" name="title" value="{{ old('title') }}" class="w-full border p-2 rounded">
+            @error('title') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <label class="block mb-1">Beschrijving</label>
+            <textarea name="description" rows="4" class="w-full border p-2 rounded">{{ old('description') }}</textarea>
+            @error('description') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="active" value="1" {{ old('active') ? 'checked' : '' }}>
+                Actief
+            </label>
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Opslaan</button>
+    </form>
 @endsection
